@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Green Hat - Valida tu idea con mentores reales</title>
+<meta name="description" content="Green Hat conecta a emprendedores jóvenes con mentores verificados para validar ideas de negocio en semanas, no en meses.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F6F3; --panel:#FFFFFF; --ink:#12261F; --muted:#51655C; --line:#D3DED7;
+  --green:#1F6B4B; --deep:#14342B; --band:#E0A526; --soft:#DDEBE3; --on-deep:#E6EFEA;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0F1A16;--panel:#16251F;--ink:#E6EFEA;--muted:#9DB2A7;--line:#2A3D35;--green:#5CC495;--deep:#0B1612;--soft:#1E3329}
+}
+:root[data-theme="dark"]{--bg:#0F1A16;--panel:#16251F;--ink:#E6EFEA;--muted:#9DB2A7;--line:#2A3D35;--green:#5CC495;--deep:#0B1612;--soft:#1E3329}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "Source Sans 3",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Source Sans 3",system-ui,sans-serif;line-height:1.1;margin:0}
+h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.15rem;font-weight:500}
+p{margin:.4rem 0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--band);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.muted{color:var(--muted)}
+section{padding:76px 0}
+.lead{max-width:60ch;color:var(--muted);font-size:1.1rem;margin-top:12px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:10;background:var(--deep);color:var(--on-deep);padding-top:env(safe-area-inset-top,0px)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font:700 1.3rem "Bricolage Grotesque",sans-serif;text-decoration:none}
+.hat{width:32px;height:32px;border-radius:50% 50% 8px 8px;background:var(--green);position:relative;flex:none}
+.hat::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:6px;background:var(--band)}
+.links{display:flex;gap:22px;align-items:center;font-size:.95rem}
+.links a{text-decoration:none;opacity:.9}
+.links a:hover{opacity:1;text-decoration:underline}
+.btn{display:inline-block;background:var(--band);color:#12261F;font-weight:600;padding:13px 22px;border-radius:10px;text-decoration:none;border:2px solid var(--band)}
+.btn:hover{filter:brightness(1.06)}
+.btn.line{background:transparent;color:inherit;border-color:currentColor}
+.btn.green{background:var(--green);border-color:var(--green);color:#fff}
+.btn.sm{padding:8px 16px}
+
+/* hero */
+.hero{background:var(--deep);color:var(--on-deep);padding:72px 0 88px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.hero p.lead{color:#B9CCC1}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero small{display:block;margin-top:14px;color:#9DB2A7}
+.match{background:var(--panel);color:var(--ink);border-radius:18px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.35);transform:rotate(1.5deg)}
+.match .row{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.avatar{width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.score{font:700 2rem "Bricolage Grotesque",sans-serif;color:var(--green)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.tag{font-size:.82rem;background:var(--soft);padding:3px 10px;border-radius:99px}
+.mini{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bg);font-size:.92rem;border-left:5px solid var(--band)}
+
+/* problem */
+.stat{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.stat b{font:700 clamp(4rem,12vw,8rem) "Bricolage Grotesque",sans-serif;line-height:.9;color:var(--green)}
+.pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:36px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card p{color:var(--muted);font-size:.97rem}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;margin-top:36px;counter-reset:s}
+.steps div{border-top:4px solid var(--green);padding-top:14px}
+.steps div:last-child{border-color:var(--band)}
+.steps b{font:500 1.2rem "Bricolage Grotesque",sans-serif}
+.steps p{color:var(--muted);font-size:.97rem}
+
+/* two audiences */
+.alt{background:var(--soft)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px}
+.two .card{padding:28px}
+.two h3{font-size:1.5rem;margin-bottom:6px}
+.pairs{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:12px}
+.pairs li{padding-left:16px;border-left:4px solid var(--green)}
+.pairs b{font-weight:600}
+.pairs span{color:var(--muted)}
+.result{margin-top:18px;padding:12px 14px;background:var(--bg);border-radius:10px;font-size:.95rem}
+
+/* myths */
+.myths{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:36px}
+.myth{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.myth q{display:block;font-weight:600;quotes:none}
+.myth q::before{content:"\201C"}.myth q::after{content:"\201D"}
+.myth p{margin-top:8px}
+
+/* pricing */
+.price{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:36px}
+.price .card.hl{background:var(--deep);color:var(--on-deep);border-color:var(--deep)}
+.price .card.hl p{color:#B9CCC1}
+.big{font:700 2.6rem "Bricolage Grotesque",sans-serif;color:var(--green);line-height:1}
+.hl .big{color:var(--band)}
+.flag{display:inline-block;background:var(--band);color:#12261F;font-weight:600;font-size:.85rem;padding:3px 12px;border-radius:99px;margin-bottom:12px}
+
+/* trust */
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:36px}
+.trust .card{border-left:6px solid var(--band)}
+
+/* faq */
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:10px}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--green)}
+details[open] summary::after{content:"\2212"}
+details p{color:var(--muted);margin-top:10px}
+.faq{max-width:780px}
+
+/* final */
+.final{background:var(--deep);color:var(--on-deep);text-align:center}
+.final .lead{margin:12px auto 0;color:#B9CCC1}
+.final .cta{justify-content:center}
+footer{background:var(--deep);color:#9DB2A7;padding:28px 0 40px;font-size:.92rem;border-top:1px solid #234438}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .hero .wrap,.two,.stat{grid-template-columns:1fr}
+  .links a:not(.btn){display:none}
+  section{padding:56px 0}
+  .match{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><span class="hat"></span>Green Hat</a>
+    <nav class="links" aria-label="Principal">
+      <a href="#como">Cómo funciona</a>
+      <a href="#mentores">Para mentores</a>
+      <a href="#precios">Costos</a>
+      <a href="#preguntas">Preguntas</a>
+      <a class="btn sm" href="#unete">Unirme</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Valida tu idea en semanas, no en meses</h1>
+      <p class="lead">Green Hat te conecta con mentores verificados y con datos reales de mercado, para que decidas con confianza antes de gastar tiempo y dinero.</p>
+      <div class="cta">
+        <a class="btn" href="#unete">Soy emprendedor</a>
+        <a class="btn line" href="#mentores">Soy mentor</a>
+      </div>
+      <small>Tu primera sesión sin comisión si la agendas en tus primeros 7 días.</small>
+    </div>
+    <div class="match" role="img" aria-label="Ejemplo de sugerencia de mentor con 94% de compatibilidad">
+      <div class="row">
+        <div style="display:flex;gap:12px;align-items:center"><span class="avatar">LM</span><div><b>Lucía M.</b><div class="muted" style="font-size:.9rem">Finanzas de startups</div></div></div>
+        <div style="text-align:right"><div class="score">94%</div><div class="muted" style="font-size:.8rem">compatible con tu idea</div></div>
+      </div>
+      <div class="tags"><span class="tag">Experiencia verificada</span><span class="tag">Español e inglés</span><span class="tag">4,9 de 5</span></div>
+      <div class="mini">Primer match en 3 a 7 días. Agenda, videollamada y pago dentro de la plataforma.</div>
+      <p class="muted" style="font-size:.78rem;margin-top:10px">Ejemplo ilustrativo del producto.</p>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="stat">
+      <b>70%</b>
+      <div>
+        <h2>De las nuevas empresas de emprendimiento joven no pasan de su primer año</h2>
+        <p class="lead">Muchas ideas no fallan por falta de ganas, sino por falta de datos confiables y de alguien con experiencia que oriente las decisiones.</p>
+      </div>
+    </div>
+    <div class="pains">
+      <div class="card"><h3>No sabes por dónde empezar</h3><p>La investigación de mercado se siente enorme cuando es tu primera vez.</p></div>
+      <div class="card"><h3>La información está dispersa</h3><p>Encontrar datos confiables y actualizados toma horas entre muchas fuentes.</p></div>
+      <div class="card"><h3>Te falta una red</h3><p>Conseguir que alguien con experiencia te dedique tiempo es difícil y frustrante.</p></div>
+      <div class="card"><h3>Te da miedo invertir</h3><p>Gastar dinero en una idea que no funciona es el riesgo más grande al empezar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="como">
+  <div class="wrap">
+    <h2>Cómo funciona</h2>
+    <p class="lead">Menos de 30 minutos para empezar. Tú pones la idea, nosotros ponemos el camino.</p>
+    <div class="steps">
+      <div><b>Cuéntanos tu idea</b><p>Crea tu perfil y completa un breve diagnóstico. Menos de 30 minutos.</p></div>
+      <div><b>Conoce tu mercado</b><p>Obtén un cálculo de TAM, SAM y SOM en menos de 20 segundos, con fuentes públicas.</p></div>
+      <div><b>Conecta con tu mentor</b><p>Nuestra IA sugiere mentores según tu necesidad. Primer match en 3 a 7 días.</p></div>
+      <div><b>Valida y avanza</b><p>Agenda sesiones, sigue tu progreso y ve avances visibles en 4 a 6 semanas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Pensado para ti y para tu mentor</h2>
+    <div class="two">
+      <div class="card">
+        <h3>Para emprendedores</h3>
+        <p class="muted">Una forma clara de pasar de idea a negocio.</p>
+        <ul class="pairs">
+          <li><b>Encuentra al mentor ideal</b> <span>sin perder tiempo buscando en redes sociales.</span></li>
+          <li><b>Agenda y conversa en un solo lugar</b> <span>sin coordinar por WhatsApp o correo.</span></li>
+          <li><b>Elige con reseñas y experiencia real</b> <span>sin arriesgarte con un desconocido.</span></li>
+          <li><b>Paga de forma segura</b> <span>sin instalar software adicional.</span></li>
+        </ul>
+        <div class="result">Lo que buscas: validar tu idea con confianza, ahorrar tiempo y ganar credibilidad frente a inversionistas.</div>
+      </div>
+      <div class="card" id="mentores">
+        <h3>Para mentores</h3>
+        <p class="muted">Ingresos extra por compartir lo que ya sabes.</p>
+        <ul class="pairs">
+          <li><b>Define tu disponibilidad y tarifa</b> <span>sin negociar con cada emprendedor.</span></li>
+          <li><b>Recibe tu pago tras cada sesión</b> <span>sin perseguir cobros.</span></li>
+          <li><b>Muestra tu experiencia</b> <span>sin crear un sitio web propio.</span></li>
+          <li><b>Da seguimiento a todo en un panel</b> <span>sin depender de notas sueltas.</span></li>
+        </ul>
+        <div class="result">Lo que buscas: ingreso adicional, reconocimiento como experto y una red más amplia, con total confidencialidad.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Lo que quizá estés pensando</h2>
+    <div class="myths">
+      <div class="myth"><q>Es lo mismo que ver contenido gratis en YouTube o TikTok.</q><p>El contenido genérico no te acompaña en tu caso específico. Aquí hay un mentor para tu idea.</p></div>
+      <div class="myth"><q>Los mentores solo tienen un título.</q><p>Cada mentor pasa por una validación de experiencia antes de aparecer en la plataforma.</p></div>
+      <div class="myth"><q>Es muy caro para alguien que apenas empieza.</q><p>Pagas solo por sesión, sin suscripción, y tu primera sesión puede salir sin comisión.</p></div>
+      <div class="myth"><q>Si doy mentorías, mi empleador se enterará.</q><p>Puedes mantener tu identidad oculta si así lo prefieres.</p></div>
+      <div class="myth"><q>No vale la pena el tiempo por la comisión.</q><p>No pagas comisión hasta que generes ingresos, y los mentores fundadores la mantienen reducida.</p></div>
+      <div class="myth"><q>Quien pide mentoría quizá no va en serio.</q><p>Las sesiones se agendan con pago confirmado, así que no hay agendas fantasma.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="precios">
+  <div class="wrap">
+    <h2>Pagas solo cuando tienes una sesión</h2>
+    <p class="lead">Sin suscripción ni renovación. La comisión se genera por cada sesión completada y se reparte entre emprendedor y mentor.</p>
+    <div class="price">
+      <div class="card hl"><span class="flag">Primeros 7 días</span><div class="big">0%</div><h3 style="margin-top:8px">de comisión en tu primera sesión</h3><p>Si la agendas dentro de los primeros 7 días de crear tu cuenta.</p></div>
+      <div class="card"><div class="big">1 a 1</div><h3 style="margin-top:8px">Garantía de satisfacción</h3><p>Si tu primera sesión no te aportó valor, te damos otra con un mentor distinto, sin costo.</p></div>
+      <div class="card"><div class="big">20</div><h3 style="margin-top:8px">Cupos de mentores fundadores</h3><p>Los primeros 20 mentores del mes mantienen una comisión reducida de forma permanente.</p></div>
+    </div>
+    <p class="muted" style="margin-top:14px">También habrá paquetes de varias sesiones, por ejemplo 4 sesiones para usar en un mes.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Confianza desde el primer día</h2>
+    <div class="trust">
+      <div class="card"><h3>Mentores verificados</h3><p>Revisamos la experiencia y las credenciales de cada mentor en 1 a 2 días hábiles.</p></div>
+      <div class="card"><h3>Tu idea es solo tuya</h3><p>Los datos de tu negocio son confidenciales. Solo se ven con tu consentimiento o si tu negocio es reportado a administración.</p></div>
+      <div class="card"><h3>Soporte cercano</h3><p>Chat en la app, correo y WhatsApp, de lunes a sábado de 8:00 a.m. a 6:00 p.m.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap faq">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Necesito una empresa para empezar?</summary><p>No. Green Hat está pensado para jóvenes emprendedores con una idea y para micro y pequeñas empresas de tecnología en etapa inicial.</p></details>
+    <details><summary>¿Cuánto tarda en llegar mi primer mentor?</summary><p>Esperamos que tu primer match llegue entre 3 y 7 días después de completar tu perfil.</p></details>
+    <details><summary>¿Con qué herramientas se integra?</summary><p>Con Google Calendar para evitar choques de agenda, y con LinkedIn para importar el perfil de los mentores. Las videollamadas funcionan con Zoom o Google Meet.</p></details>
+    <details><summary>¿Qué pasa si la sesión no me sirve?</summary><p>Tu primera sesión tiene garantía de satisfacción: te damos una de reemplazo con otro mentor, sin costo.</p></details>
+    <details><summary>¿Puedo usarlo desde el celular?</summary><p>Sí. Green Hat funciona en el navegador y también como aplicación móvil, sin pasos técnicos.</p></details>
+  </div>
+</section>
+
+<section class="final" id="unete">
+  <div class="wrap">
+    <h2>Tu idea merece una segunda opinión experta</h2>
+    <p class="lead">Empieza hoy tu validación, o comparte tu experiencia con quienes están empezando.</p>
+    <div class="cta">
+      <a class="btn" href="#unete">Soy emprendedor</a>
+      <a class="btn line" href="#unete">Soy mentor</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Green Hat. Plataforma de mentoría para validar ideas de negocio en El Salvador.</span>
+    <span>Soporte: lunes a sábado, 8:00 a.m. a 6:00 p.m.</span>
+  </div>
+</footer>
+</body>
+</html>
