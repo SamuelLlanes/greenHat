@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Green Hat - Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF3EF; --panel:#FFFFFF; --ink:#12261F; --muted:#51655C; --line:#D3DED7;
+  --green:#1F6B4B; --deep:#14342B; --band:#E0A526; --soft:#DDEBE3; --warn:#B4472F;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0F1A16;--panel:#16251F;--ink:#E6EFEA;--muted:#9DB2A7;--line:#2A3D35;--green:#5CC495;--deep:#0B1612;--soft:#1E3329;--warn:#F08A70}
+}
+:root[data-theme="dark"]{--bg:#0F1A16;--panel:#16251F;--ink:#E6EFEA;--muted:#9DB2A7;--line:#2A3D35;--green:#5CC495;--deep:#0B1612;--soft:#1E3329;--warn:#F08A70}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Source Sans 3",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Source Sans 3",system-ui,sans-serif;line-height:1.15;margin:0}
+h1{font-size:1.9rem;font-weight:700}
+h2{font-size:1.25rem;font-weight:700;margin-bottom:.25rem}
+h3{font-size:1rem;font-weight:500}
+p{margin:.25rem 0}
+.muted{color:var(--muted);font-size:.9rem}
+a{color:var(--green)}
+:focus-visible{outline:3px solid var(--band);outline-offset:2px}
+.sr{position:absolute;opacity:0;pointer-events:none}
+
+/* shell */
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.side{background:var(--deep);color:#E6EFEA;padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font:700 1.35rem "Bricolage Grotesque",sans-serif}
+.hat{width:34px;height:34px;border-radius:50% 50% 8px 8px;background:var(--green);position:relative;flex:none}
+.hat::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:6px;background:var(--band)}
+.roles{display:grid;grid-template-columns:1fr 1fr;background:#0B1612;border-radius:10px;padding:4px}
+.roles label{text-align:center;padding:8px 4px;border-radius:7px;cursor:pointer;font-weight:600;font-size:.9rem;color:#9DB2A7}
+#v-emp:checked ~ .app label[for="v-emp"], #v-men:checked ~ .app label[for="v-men"]{background:var(--band);color:#12261F}
+#v-emp:focus-visible ~ .app label[for="v-emp"], #v-men:focus-visible ~ .app label[for="v-men"]{outline:3px solid #fff}
+.nav{display:none;flex-direction:column;gap:2px}
+.nav a{color:#E6EFEA;text-decoration:none;padding:8px 10px;border-radius:8px;font-size:.95rem}
+.nav a:hover{background:#1E3329}
+#v-emp:checked ~ .app .nav-emp, #v-men:checked ~ .app .nav-men{display:flex}
+.view{display:none}
+#v-emp:checked ~ .app .view-emp, #v-men:checked ~ .app .view-men{display:block}
+.side .foot{margin-top:auto;font-size:.82rem;color:#9DB2A7}
+.side .foot b{color:#E6EFEA;font-weight:600}
+
+main{padding:28px 32px 56px;max-width:1180px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:var(--soft);font-size:.85rem;font-weight:600}
+.chip.ok::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chip.band{background:var(--band);color:#12261F}
+.sec{margin-top:30px}
+.sec>header{margin-bottom:12px}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.card.flat{background:transparent;border-style:dashed}
+
+/* metrics */
+.metric .big{font:700 2.1rem "Bricolage Grotesque",sans-serif;color:var(--green)}
+.bar{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;margin:10px 0 6px}
+.bar i{display:block;height:100%;background:var(--green)}
+.bar.band i{background:var(--band)}
+
+/* checklist */
+.check{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.check li{display:flex;gap:10px;align-items:flex-start}
+.check li::before{content:"";flex:none;width:18px;height:18px;margin-top:3px;border-radius:5px;border:2px solid var(--green)}
+.check li.done::before{background:var(--green);box-shadow:inset 0 0 0 3px var(--panel)}
+
+/* market rings */
+.market{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center}
+.rings{position:relative;width:240px;height:240px;margin:auto}
+.rings div{position:absolute;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.r1{width:240px;height:240px;background:var(--soft)}
+.r2{width:160px;height:160px;background:#9FCDB5}
+.r3{width:80px;height:80px;background:var(--green)}
+.rings span{position:absolute;left:50%;transform:translateX(-50%);font-weight:600;font-size:.82rem}
+.rings .l1{top:14px}.rings .l2{top:58px}.rings .l3{top:105px;color:#fff}
+dl{margin:0;display:grid;gap:10px}
+dt{font-weight:600}
+dd{margin:0;color:var(--muted);font-size:.92rem}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* mentors */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters span{border:1px solid var(--line);background:var(--panel);padding:6px 12px;border-radius:8px;font-size:.9rem}
+.mentor{display:flex;flex-direction:column;gap:8px}
+.mentor .row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.score{font:700 1.1rem "Bricolage Grotesque",sans-serif;color:var(--green)}
+.btn{display:inline-block;background:var(--green);color:#fff;text-decoration:none;font-weight:600;padding:9px 14px;border-radius:9px;border:0;text-align:center}
+.btn.alt{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.tag{font-size:.8rem;background:var(--soft);padding:2px 9px;border-radius:99px}
+
+/* tables and lists */
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+.scroll{overflow-x:auto}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--muted)}
+.list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px}
+.list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.list li:last-child{border:0}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0;margin-top:10px}
+.steps div{border-top:4px solid var(--green);padding:10px 10px 0 0}
+.steps div:nth-child(n+3){border-color:var(--band)}
+.lock{border-left:5px solid var(--band)}
+.note{font-size:.82rem;color:var(--muted);margin-top:26px}
+
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;padding:16px}
+  .nav{flex-direction:row!important;flex-wrap:wrap}
+  .side .foot{display:none}
+  main{padding:20px 16px 48px}
+  .market{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<input class="sr" type="radio" name="vista" id="v-emp" checked aria-label="Vista de emprendedor">
+<input class="sr" type="radio" name="vista" id="v-men" aria-label="Vista de mentor">
+
+<div class="app">
+<aside class="side">
+  <div class="brand"><span class="hat"></span>Green Hat</div>
+  <div class="roles" role="group" aria-label="Elegir rol">
+    <label for="v-emp">Emprendedor</label>
+    <label for="v-men">Mentor</label>
+  </div>
+  <nav class="nav nav-emp" aria-label="Secciones del emprendedor">
+    <a href="#e-inicio">Resumen</a>
+    <a href="#e-mercado">Mi mercado</a>
+    <a href="#e-mentores">Mentores sugeridos</a>
+    <a href="#e-sesiones">Sesiones</a>
+    <a href="#e-comunidad">Comunidad</a>
+    <a href="#e-planes">Costos y garantía</a>
+    <a href="#ayuda">Ayuda</a>
+  </nav>
+  <nav class="nav nav-men" aria-label="Secciones del mentor">
+    <a href="#m-inicio">Resumen</a>
+    <a href="#m-perfil">Perfil y disponibilidad</a>
+    <a href="#m-mentees">Mis emprendedores</a>
+    <a href="#m-cobros">Cobros</a>
+    <a href="#m-resenas">Reseñas</a>
+    <a href="#m-privacidad">Confidencialidad</a>
+    <a href="#ayuda">Ayuda</a>
+  </nav>
+  <div class="foot"><b>Sesión iniciada con Google</b><br>Integraciones: Google Calendar, Google Meet, Zoom, LinkedIn</div>
+</aside>
+
+<main>
+<!-- ================= EMPRENDEDOR ================= -->
+<div class="view view-emp">
+  <div class="top" id="e-inicio">
+    <div>
+      <h1>Valida tu idea en semanas, no en meses</h1>
+      <p class="muted">Tu panel de emprendedor. Todos los datos de esta pantalla son de ejemplo.</p>
+    </div>
+    <div class="chips">
+      <span class="chip ok">Datos guardados, disponibles sin conexión</span>
+      <span class="chip">Inicio de sesión con Google</span>
+    </div>
+  </div>
+
+  <section class="grid g2">
+    <div class="card">
+      <h2>Empieza aquí</h2>
+      <p class="muted">Perfil y diagnóstico de tu idea: menos de 30 minutos.</p>
+      <ul class="check">
+        <li class="done">Crear tu perfil</li>
+        <li class="done">Completar el diagnóstico de tu idea de negocio</li>
+        <li>Calcular el tamaño de tu mercado</li>
+        <li>Conectar Google Calendar</li>
+        <li>Agendar tu primera sesión</li>
+      </ul>
+      <div class="bar"><i style="width:40%"></i></div>
+      <p class="muted">2 de 5 pasos completados</p>
+    </div>
+    <div class="card">
+      <h2>Tu ruta de validación</h2>
+      <p class="muted">Tiempos que prometemos para cada etapa.</p>
+      <div class="steps">
+        <div><b>Primer match</b><p class="muted">3 a 7 días</p></div>
+        <div><b>Primera sesión</b><p class="muted">Con 0% de comisión si la agendas en tus primeros 7 días</p></div>
+        <div><b>Avance visible</b><p class="muted">4 a 6 semanas de acompañamiento</p></div>
+        <div><b>Idea lista para lanzar</b><p class="muted">Convocatorias de incubadoras</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <header><h2>Tus resultados medibles</h2><p class="muted">Avance hacia las metas de la promesa de Green Hat.</p></header>
+    <div class="grid g3">
+      <div class="card metric"><div class="big">75%</div><h3>Ideas validadas antes de invertir dinero real</h3><div class="bar"><i style="width:45%"></i></div><p class="muted">Meta: aumentar 75%</p></div>
+      <div class="card metric"><div class="big">-50%</div><h3>Menos tiempo en investigación dispersa</h3><div class="bar band"><i style="width:60%"></i></div><p class="muted">Meta: reducir 50%</p></div>
+      <div class="card metric"><div class="big">80%</div><h3>De idea a negocio formalmente lanzado</h3><div class="bar"><i style="width:20%"></i></div><p class="muted">Meta: incrementar 80% la conversión</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="e-mercado">
+    <header><h2>Mi mercado: TAM, SAM y SOM</h2><p class="muted">Estimado calculado con fuentes públicas seleccionadas, para la industria y el mercado geográfico de tu idea.</p></header>
+    <div class="card market">
+      <div class="rings" role="img" aria-label="Tres círculos concéntricos: TAM, SAM y SOM">
+        <div class="r1"></div><div class="r2"></div><div class="r3"></div>
+        <span class="l1">TAM</span><span class="l2">SAM</span><span class="l3">SOM</span>
+      </div>
+      <div>
+        <dl>
+          <div><dt>TAM: $168 millones al año</dt><dd>Todas las microempresas de Centroamérica que podrían usar tu solución (ejemplo).</dd></div>
+          <div><dt>SAM: $696 mil al año</dt><dd>La parte que puedes atender hoy en El Salvador (ejemplo).</dd></div>
+          <div><dt>SOM: $69 mil al año</dt><dd>Lo que puedes alcanzar al inicio, cerca del 10% del mercado atendible (ejemplo).</dd></div>
+        </dl>
+        <div class="meta">
+          <span class="chip ok">Calculado en menos de 20 segundos</span>
+          <span class="chip">Última consulta guardada sin conexión</span>
+          <a class="btn" href="#e-mercado">Calcular otra idea</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="e-mentores">
+    <header><h2>Mentores sugeridos para tu idea</h2><p class="muted">Matching con IA según tu necesidad. Todos los perfiles pasaron por verificación de experiencia.</p></header>
+    <div class="filters" aria-label="Filtros de búsqueda"><span>Industria: Tecnología</span><span>Idioma: Español</span><span>Precio: hasta $40 por sesión</span></div>
+    <div class="grid g3">
+      <article class="card mentor">
+        <div class="row"><div style="display:flex;gap:10px;align-items:center"><span class="avatar">LM</span><div><h3>Lucía M.</h3><p class="muted">Finanzas de startups</p></div></div><span class="score">94%</span></div>
+        <div><span class="tag">Verificada</span> <span class="tag">4,9 de 5, 23 reseñas</span></div>
+        <p class="muted">Compatibilidad según tu diagnóstico. Sesión única o acompañamiento continuo. $30 por sesión.</p>
+        <a class="btn" href="#e-sesiones">Agendar sesión</a>
+      </article>
+      <article class="card mentor">
+        <div class="row"><div style="display:flex;gap:10px;align-items:center"><span class="avatar">RP</span><div><h3>Ricardo P.</h3><p class="muted">Marketing y ventas</p></div></div><span class="score">88%</span></div>
+        <div><span class="tag">Verificado</span> <span class="tag">4,7 de 5, 15 reseñas</span></div>
+        <p class="muted">Video o chat. Paquete de 4 sesiones para usar en un mes. $35 por sesión.</p>
+        <a class="btn alt" href="#e-sesiones">Agendar sesión</a>
+      </article>
+      <article class="card mentor">
+        <div class="row"><div style="display:flex;gap:10px;align-items:center"><span class="avatar">AC</span><div><h3>Andrea C.</h3><p class="muted">Legal y constitución</p></div></div><span class="score">81%</span></div>
+        <div><span class="tag">Verificada</span> <span class="tag">4,8 de 5, 9 reseñas</span></div>
+        <p class="muted">Ayuda a pasar de idea a negocio formal. $40 por sesión.</p>
+        <a class="btn alt" href="#e-sesiones">Agendar sesión</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" id="e-sesiones">
+    <header><h2>Sesiones y agenda</h2><p class="muted">Agenda, videollamada, chat y pago en un solo lugar, sin saltar entre WhatsApp, correo y Zoom.</p></header>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Próximas sesiones</h3>
+        <div class="scroll"><table>
+          <tr><th>Día</th><th>Mentor</th><th>Formato</th><th>Pago</th></tr>
+          <tr><td>Jue 15, 4:00 p.m.</td><td>Lucía M.</td><td>Video</td><td>Confirmado</td></tr>
+          <tr><td>Jue 22, 4:00 p.m.</td><td>Lucía M.</td><td>Chat</td><td>Pendiente</td></tr>
+        </table></div>
+        <div class="meta"><span class="chip ok">Sincronizado con Google Calendar</span><span class="chip">Chat directo con tu mentor</span></div>
+      </div>
+      <div class="card lock">
+        <h3>Tu idea es solo tuya</h3>
+        <p class="muted">Los datos de tu negocio son completamente confidenciales. Solo se ven si tú das tu consentimiento, o si tu negocio es reportado a administración.</p>
+        <p class="muted" style="margin-top:10px">Pagos seguros dentro de la plataforma.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="e-comunidad">
+    <header><h2>Comunidad y oportunidades</h2><p class="muted">Mentores, inversionistas y otros emprendedores para que no avances solo.</p></header>
+    <div class="grid g3">
+      <div class="card"><h3>Conexiones</h3><ul class="list"><li><span>Mentores</span><b>12 sugeridos</b></li><li><span>Inversionistas</span><b>4 abiertos a ideas</b></li><li><span>Comunidades</span><b>3 de tecnología</b></li></ul></div>
+      <div class="card"><h3>Convocatorias en El Salvador</h3><p class="muted">Incubadoras y concursos de emprendimiento con fechas clave para tu idea.</p><ul class="list"><li><span>Incubadora (ejemplo)</span><b>Cierra el 30 oct</b></li><li><span>Concurso de ideas (ejemplo)</span><b>Cierra el 15 nov</b></li></ul></div>
+      <div class="card"><h3>Prepara tu pitch</h3><p class="muted">Practica con tu mentor cómo presentar y vender tu idea ante inversionistas.</p><a class="btn alt" href="#e-sesiones" style="margin-top:10px">Pedir sesión de pitch</a></div>
+    </div>
+  </section>
+
+  <section class="sec" id="e-planes">
+    <header><h2>Costos y garantía</h2><p class="muted">Pagas por sesión completada. No hay suscripción ni renovación.</p></header>
+    <div class="grid g3">
+      <div class="card"><span class="chip band">Quedan 5 días</span><h3 style="margin-top:10px">Primera sesión sin comisión</h3><p class="muted">Agéndala dentro de los primeros 7 días de crear tu cuenta.</p></div>
+      <div class="card"><h3>Paquetes de sesiones</h3><p class="muted">Por ejemplo, 4 sesiones para usar en un mes. Cada paquete tiene fecha de vencimiento.</p></div>
+      <div class="card"><h3>Garantía de satisfacción</h3><p class="muted">Si tu primera sesión no te aportó valor, te damos otra con un mentor distinto, sin costo.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= MENTOR ================= -->
+<div class="view view-men">
+  <div class="top" id="m-inicio">
+    <div>
+      <h1>Comparte tu experiencia y genera ingresos extra</h1>
+      <p class="muted">Tu panel de mentor. Todos los datos de esta pantalla son de ejemplo.</p>
+    </div>
+    <div class="chips">
+      <span class="chip band">Mentor fundador: comisión reducida permanente</span>
+      <span class="chip">Inicio de sesión con Google</span>
+    </div>
+  </div>
+
+  <section class="grid g3">
+    <div class="card metric"><div class="big">+10%</div><h3>Ingresos mensuales por mentorías</h3><div class="bar"><i style="width:70%"></i></div><p class="muted">Este mes: $420 de ejemplo</p></div>
+    <div class="card metric"><div class="big">+20%</div><h3>Referidos de nuevos usuarios</h3><div class="bar band"><i style="width:50%"></i></div><p class="muted">Por recomendaciones de la plataforma</p></div>
+    <div class="card metric"><div class="big">+50%</div><h3>Visibilidad profesional</h3><div class="bar"><i style="width:65%"></i></div><p class="muted">Vistas de perfil y solicitudes de contacto al mes</p></div>
+  </section>
+
+  <section class="sec" id="m-perfil">
+    <header><h2>Perfil y disponibilidad</h2><p class="muted">Tú defines cuándo, cómo y a qué precio. Sin negociar con cada emprendedor.</p></header>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Estado del perfil</h3>
+        <ul class="check">
+          <li class="done">Perfil creado, con foto y biografía</li>
+          <li class="done">Experiencia importada desde LinkedIn</li>
+          <li class="done">Validación de la plataforma aprobada (1 a 2 días hábiles)</li>
+          <li>Sincronizar Google Calendar</li>
+        </ul>
+        <p class="muted" style="margin-top:10px">Tu primera sesión pagada llega entre 1 y 2 semanas después de completar el perfil.</p>
+      </div>
+      <div class="card">
+        <h3>Tus condiciones</h3>
+        <ul class="list">
+          <li><span>Áreas de enseñanza</span><b>Finanzas, tecnología</b></li>
+          <li><span>Tarifa por sesión</span><b>$30</b></li>
+          <li><span>Tipos de paquete</span><b>Sesión única o acompañamiento continuo</b></li>
+          <li><span>Disponibilidad</span><b>Jue y vie, 4 a 7 p.m.</b></li>
+          <li><span>Comunicación</span><b>Video o chat</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="m-mentees">
+    <header><h2>Mis emprendedores</h2><p class="muted">Seguimiento de cada mentoría activa en un solo lugar, sin depender de notas sueltas.</p></header>
+    <div class="card scroll"><table>
+      <tr><th>Emprendedor</th><th>Etapa</th><th>Progreso</th><th>Próxima sesión</th><th>Pago</th></tr>
+      <tr><td>Carlos (ejemplo)</td><td>Ideación</td><td>35%</td><td>Jue 15, 4:00 p.m.</td><td>Confirmado</td></tr>
+      <tr><td>Marta (ejemplo)</td><td>Validación</td><td>70%</td><td>Vie 16, 5:00 p.m.</td><td>Confirmado</td></tr>
+      <tr><td>Daniel (ejemplo)</td><td>Lanzamiento</td><td>90%</td><td>Jue 22, 4:00 p.m.</td><td>Confirmado</td></tr>
+    </table></div>
+    <p class="muted" style="margin-top:8px">Solo se agendan sesiones con pago confirmado, para evitar agendas fantasma.</p>
+  </section>
+
+  <section class="sec" id="m-cobros">
+    <header><h2>Cobros</h2><p class="muted">Recibes el pago después de cada sesión, sin perseguir cobros. La comisión se ve por sesión, sin sorpresas.</p></header>
+    <div class="grid g2">
+      <div class="card scroll"><table>
+        <tr><th>Sesión</th><th>Tarifa</th><th>Comisión</th><th>Recibes</th></tr>
+        <tr><td>Carlos, 8 oct</td><td>$30</td><td>Reducida</td><td>Pagado</td></tr>
+        <tr><td>Marta, 9 oct</td><td>$30</td><td>Reducida</td><td>Pagado</td></tr>
+        <tr><td>Daniel, 10 oct</td><td>$30</td><td>Reducida</td><td>En proceso</td></tr>
+      </table></div>
+      <div class="card">
+        <h3>Tus beneficios de comisión</h3>
+        <ul class="list">
+          <li><span>Primeras 5 sesiones o primer mes</span><b>Comisión reducida</b></li>
+          <li><span>Cupo de mentores fundadores (primeros 20 del mes)</span><b>Comisión reducida permanente</b></li>
+        </ul>
+        <p class="muted" style="margin-top:10px">No pagas comisión hasta que generes ingresos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="m-resenas">
+    <header><h2>Reseñas y reputación</h2><p class="muted">Construye tu marca personal con reseñas visibles, sin depender solo del boca a boca.</p></header>
+    <div class="grid g3">
+      <div class="card metric"><div class="big">4,9</div><h3>Calificación promedio</h3><p class="muted">23 reseñas</p></div>
+      <div class="card"><p>"Me ayudó a ordenar las finanzas de mi idea en una sola sesión."</p><p class="muted">Emprendedor (ejemplo)</p></div>
+      <div class="card"><p>"Claro, puntual y con experiencia real."</p><p class="muted">Emprendedora (ejemplo)</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="m-privacidad">
+    <header><h2>Confidencialidad</h2></header>
+    <div class="grid g2">
+      <div class="card lock"><h3>Perfil discreto</h3><p class="muted">Muestra tu experiencia sin exponer tu identidad ni tu empleador actual, si así lo prefieres.</p><div class="meta"><span class="chip ok">Identidad oculta</span></div></div>
+      <div class="card lock"><h3>Datos protegidos</h3><p class="muted">Los datos de negocio de los emprendedores son confidenciales y solo se ven con consentimiento o por reporte a administración.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= AYUDA (común) ================= -->
+<section class="sec" id="ayuda">
+  <header><h2>Ayuda y soporte</h2><p class="muted">Atención de lunes a sábado, de 8:00 a.m. a 6:00 p.m.</p></header>
+  <div class="grid g3">
+    <div class="card"><h3>Canales</h3><ul class="list"><li><span>Chat en vivo en la app</span></li><li><span>Correo</span></li><li><span>WhatsApp</span></li></ul></div>
+    <div class="card"><h3>Preguntas frecuentes</h3><ul class="list"><li><span>¿Los mentores tienen experiencia real?</span></li><li><span>¿Quién ve mi idea?</span></li><li><span>¿Cómo funciona la garantía?</span></li></ul></div>
+    <div class="card"><h3>Guías en video</h3><p class="muted">Una sección de guías para aprender a usar Green Hat paso a paso.</p></div>
+  </div>
+  <p class="note">Prototipo en HTML y CSS. Los números, nombres y fechas son ejemplos para mostrar cómo se vería cada promesa del proyecto.</p>
+</section>
+</main>
+</div>
+</body>
+</html>
